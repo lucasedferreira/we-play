@@ -1,0 +1,20 @@
+{
+  "name": "weplay",
+  "version": "1.0.0",
+  "description": "After Party",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucasedferreira/we-play.git"
+  },
+  "author": "lucasedferreira",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lucasedferreira/we-play/issues"
+  },
+  "homepage": "https://github.com/lucasedferreira/we-play#readme"
+}
