@@ -3,10 +3,10 @@ const cron = require("node-cron");
 const express = require("express");
 const app = express();
 
-// const TelegramService = require("./services/Telegraf/TelegrafService");
-// new TelegramService().init();
+const WePlay = require("./domains/main");
+new WePlay().init();
 
-const KeepAliveService = require("./services/KeepAliveService");
+const KeepAliveService = require("./domains/KeepAlive/KeepAlive");
 new KeepAliveService(app, cron).start();
 
 app.listen(process.env.PORT || 5000, () => {

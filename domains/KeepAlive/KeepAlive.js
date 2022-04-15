@@ -1,4 +1,4 @@
-const Client = require("../clients/GenericClient");
+const axios = require("axios").default;
 const WAKEUP_ROUTE = "/wakeup";
 
 module.exports = class KeepAliveService {
@@ -9,7 +9,7 @@ module.exports = class KeepAliveService {
   constructor(app, cron) {
     this.#app = app;
     this.#cron = cron;
-    this.#client = new Client().client;
+    this.#client = axios;
   }
 
   async start() {
