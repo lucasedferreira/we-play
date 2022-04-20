@@ -6,6 +6,9 @@ const app = express();
 const WePlay = require("./domains/main");
 new WePlay().init();
 
+const AlertService = require("./domains/Alert/Checker");
+new AlertService(cron).start();
+
 const KeepAliveService = require("./domains/KeepAlive/KeepAlive");
 new KeepAliveService(app, cron).start();
 

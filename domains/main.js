@@ -1,5 +1,6 @@
 const { Telegraf } = require("telegraf");
 const MessageManager = require("./Message/Manager");
+const AlertActions = require("./Alert/Actions")
 
 module.exports = class WePlay {
   bot;
@@ -13,7 +14,7 @@ module.exports = class WePlay {
     this.bot.start((ctx) => ctx.reply("https://youtu.be/qfVuRQX0ydQ"));
     this.bot.help((ctx) => ctx.reply("Bot para gerenciar vídeos"));
 
-    // this.#setCommands();
+    new AlertActions(this.bot).create();
 
     this.bot.hears("ping", (ctx) => ctx.reply("pong"));
     this.bot.on("message", async (ctx) => {

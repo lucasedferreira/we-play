@@ -1,4 +1,5 @@
 const { Client } = require("@notionhq/client");
+const notionDatabases = require("../../enums/NotionDatabase");
 
 module.exports = class NotionClient {
   constructor() {
@@ -7,12 +8,32 @@ module.exports = class NotionClient {
     });
   }
 
-  async createPage(data, databaseId) {
+  async createPage(databaseId, data) {
     await this.notion.pages.create({
       parent: {
         database_id: databaseId,
       },
       properties: this.#parseData(data),
+    });
+  }
+
+  async searchGroupsByName(groupsNames) {
+    if (!(groupsNames instanceof Array)) groupsNames = [groupsNames];
+
+    const filters = groupsNames.map((groupName) => {
+      return {
+        property: "Name",
+        rich_text: {
+          contains: groupName,
+        },
+      };
+    });
+
+    return await this.notion.databases.query({
+      database_id: notionDatabases.GROUPS,
+      filter: {
+        or: filters,
+      },
     });
   }
 
@@ -29,9 +50,46 @@ module.exports = class NotionClient {
         continue;
       }
 
+      if (propertyName === "Thumb") {
+        parsedProperties.Thumb = [
+          {
+            type: "external",
+            name: "thumbnail",
+            external: {
+              url: propertyValue,
+            },
+          },
+        ];
+        continue;
+      }
+
+      if (propertyName === "Group") {
+        parsedProperties.Group = propertyValue.map((groupId) => {
+          return { id: groupId };
+        });
+        continue;
+      }
+
+      if (propertyName === "Published At") {
+        parsedProperties["Published At"] = {
+          start: propertyValue,
+        };
+        continue;
+      }
+
+      if (propertyName === "Created By") {
+        parsedProperties["Created By"] = [{ id: propertyValue }];
+        continue;
+      }
+
+      if (propertyName === "Channel") {
+        parsedProperties.Channel = [{ text: { content: propertyValue } }];
+        continue;
+      }
+
       parsedProperties[propertyName] = propertyValue;
     }
-console.log(parsedProperties);
+
     return parsedProperties;
   }
 };
