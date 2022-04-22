@@ -8,12 +8,13 @@ module.exports = class NotionClient {
     });
   }
 
-  async createPage(databaseId, data) {
+  async createPage(databaseId, properties, children) {
     await this.notion.pages.create({
       parent: {
         database_id: databaseId,
       },
-      properties: this.#parseData(data),
+      properties: this.#parseProperties(properties),
+      children,
     });
   }
 
@@ -37,7 +38,7 @@ module.exports = class NotionClient {
     });
   }
 
-  #parseData(properties) {
+  #parseProperties(properties) {
     const propertiesInArray = Object.entries(properties);
 
     const parsedProperties = {};

@@ -19,9 +19,9 @@ module.exports = class YouTubeVideo {
       throw new Error("Video not found");
 
     const video = response.data.items[0];
-    console.log(this.#parseDuration(video.contentDetails.duration));
     return {
       title: video.snippet.title,
+      url: `https://www.youtube.com/watch?v=${video.id}`,
       channel: video.snippet.channelTitle,
       thumbnail:
         video.snippet.thumbnails?.maxres?.url ??
